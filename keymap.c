@@ -4844,38 +4844,19 @@ static bool show_text = true;
 
 #include "frames.inc"
 
-static uint8_t clean_frame = 0;
-
 static void render_stats(void) {
     oled_set_cursor(0,14);
     render_wpm();
     render_clock(0,15);
 }
 
-static void render_text_clean(void) {
-    oled_write_raw_P(text_clean[clean_frame], frame_size);
-}
-
-static void render_text_major(void) {
-    oled_write_raw_P(text_major[rand() % text_major_count], frame_size);
-}
-
-#define BIAS 2
-
-static void render_text_minor(bool can_be_major) {
-    clean_frame = rand() % 2;
-    uint8_t frame = can_be_major ? rand() % (BIAS*text_minor_count + text_major_count) : rand() % text_minor_count;
-    if (frame < BIAS*text_minor_count) {
-        oled_write_raw_P(text_minor[frame % text_minor_count], frame_size);
-        return;
-    }
-
-    render_text_major();
-}
-
 static void render_logo_clean(void) {
     oled_write_raw_P(logo_clean, frame_size);
     render_stats();
+}
+
+static void render_jerboa(void) {
+    oled_write_raw_P(jerboa, frame_size);
 }
 
 static void render_logo_major(void) {
@@ -4900,19 +4881,19 @@ static void render_draw(void) {
 
     anim_timer = timer_elapsed(render_timer);
     if (anim_timer < 150) {
-        show_text ? render_text_major() : render_logo_major();
+        show_text ? render_jerboa() : render_logo_major();
         return;
     }
     if (anim_timer < 250) {
-        show_text ? render_text_minor(true) : render_logo_minor(true);
+        show_text ? render_jerboa() : render_logo_minor(true);
         return;
     }
     if (anim_timer > 9750 && anim_timer < 9850) {
-        show_text ? render_text_minor(true) : render_logo_minor(true);
+        show_text ? render_jerboa() : render_logo_minor(true);
         return;
     }
     if (anim_timer > 9850 && anim_timer < 10000) {
-        show_text ? render_text_major() : render_logo_major();
+        show_text ? render_jerboa() : render_logo_major();
         return;
     }
     if (anim_timer > 10000) {
@@ -4922,7 +4903,7 @@ static void render_draw(void) {
 
     if (minor && 0 != frame_count) {
         frame_count--;
-        show_text ? render_text_minor(true) : render_logo_minor(true);
+        show_text ? render_jerboa() : render_logo_minor(true);
 
         return;
     }
@@ -4930,7 +4911,7 @@ static void render_draw(void) {
     minor = false;
     major = false;
 
-    show_text ? render_text_clean() : render_logo_clean();
+    show_text ? render_jerboa() : render_logo_clean();
 
     if (1 == rand() % 60) {
         minor = true;
