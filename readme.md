@@ -1,4 +1,4 @@
-# Desync's Keymap
+# Fiona's Keymap (modified from [Desync's layout](https://github.com/DesyncTheThird/corne-keymap))
 ![Layout](images/dark_layout.png?raw=true)
 
 <img src="./images/left.gif" width="110"> <img src="./images/right.jpg" width="113"> <img src="./images/base display.png" width="110"> <img src="./images/edit display.png" width="110"> <img src="./images/waves.png" width="180"> <img src="./images/pro_micro.png" width="180">
