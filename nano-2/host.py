@@ -178,13 +178,13 @@ def pass_messages():
     devB = None
 
     state_a = ConnectionState(KEYBOARD, "Keyboard")
-    state_b = ConnectionState(TRACKBALL, "Trackball")
+#    state_b = ConnectionState(TRACKBALL, "Trackball")
 
     logger.info("Pass-through loop started.")
 
     while running.is_set():
         devA = state_a.poll(devA)
-        devB = state_b.poll(devB)
+ #       devB = state_b.poll(devB)
 
         now = time.time()
         if abs(now - last_time_sent) >= TIME_SEND_INTERVAL:
@@ -201,23 +201,23 @@ def pass_messages():
             dataA = safe_read(devA, KEYBOARD["report_length"])
             if dataA is None:
                 devA = handle_disconnect(devA, "Keyboard")
-            elif dataA and devB:
-                report = make_report(process_A_to_B(dataA), TRACKBALL["report_length"])
-                if not safe_write(devB, report):
-                    devB = handle_disconnect(devB, "Trackball")
-                else:
-                    log_data("KB → TB", report[1:])
+#            elif dataA and devB:
+#                report = make_report(process_A_to_B(dataA), TRACKBALL["report_length"])
+#                if not safe_write(devB, report):
+#                    devB = handle_disconnect(devB, "Trackball")
+#                else:
+#                    log_data("KB → TB", report[1:])
 
-        if devB:
-            dataB = safe_read(devB, TRACKBALL["report_length"])
-            if dataB is None:
-                devB = handle_disconnect(devB, "Trackball")
-            elif dataB and devA:
-                report = make_report(process_B_to_A(dataB), KEYBOARD["report_length"])
-                if not safe_write(devA, report):
-                    devA = handle_disconnect(devA, "Keyboard")
-                else:
-                    log_data("TB → KB", report[1:])
+#        if devB:
+#            dataB = safe_read(devB, TRACKBALL["report_length"])
+#            if dataB is None:
+#                devB = handle_disconnect(devB, "Trackball")
+#            elif dataB and devA:
+#                report = make_report(process_B_to_A(dataB), KEYBOARD["report_length"])
+#                if not safe_write(devA, report):
+#                    devA = handle_disconnect(devA, "Keyboard")
+#                else:
+#                    log_data("TB → KB", report[1:])
 
         time.sleep(0.001)
 

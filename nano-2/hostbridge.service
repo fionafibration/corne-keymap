@@ -3,8 +3,8 @@ Description=Trackball Passthrough
 
 [Service]
 Type=simple
-ExecStart=[path/to/venvs]/hostbridge/bin/python [path/to/script]/host.py --silent
-WorkingDirectory=[path/to/keymaps]/desync/nano-2
+ExecStart=/mnt/c/Users/njb24206/AppData/Local/Python/bin/python.exe /home/fiona/qmk_firmware/keyboards/crkbd/keymaps/desync/nano-2/host.py --silent
+WorkingDirectory=/home/fiona/qmk_firmware/keyboards/crkbd/keymaps/desync/nano-2/
 Restart=on-failure
 RestartSec=5
 
